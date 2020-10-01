@@ -1,4 +1,5 @@
-# this code runs on remote server  side
+                                                                   File: publicip_rewrite.py                                                                                
+
 
 import http.server
 import socketserver
@@ -18,13 +19,14 @@ def rewrite_public_ip(o):
 
 
 class Requesthandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        o = urlparse(self.path)
+        self.send_response(200)
+        self.end_headers()
+        rewrite_public_ip(o.path[1:])
+        return
 
 
-
-
-
-
-
-
+socketserver.TCPServer(("", 8080), Requesthandler).serve_forever()
 
 
